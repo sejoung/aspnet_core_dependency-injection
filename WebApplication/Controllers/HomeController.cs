@@ -39,7 +39,7 @@ namespace WebApplication.Controllers
 			_logger.LogInformation($"Transient: {_transientOperation.OperationId}");
 			_logger.LogInformation($"Scoped: {_scopedOperation.OperationId}");
 			_logger.LogInformation($"Singleton: {_singletonOperation.OperationId}");
-			_dependency.First(dependency => dependency.GetType() == typeof(MyDependency.IOC.MyDependency)).WriteMessage("잘나옴");
+			_dependency.First(dependency => dependency.GetType() == typeof(MyDependency3)).WriteMessage("잘나옴");
 			_testServiceScoped.Get();
 			_testServiceTransient.Get();
 			return View();

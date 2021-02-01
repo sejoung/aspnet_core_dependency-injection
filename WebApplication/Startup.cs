@@ -22,7 +22,7 @@ namespace WebApplication
 		public void ConfigureServices(IServiceCollection services)
 		{
 			
-			services.AddScoped<IMyDependency, MyDependency.IOC.MyDependency>();
+			services.AddScoped<IMyDependency, MyDependency3>();
 			services.AddScoped<IMyDependency, MyDependency2>();
 			services.AddTransient<IOperationTransient, Operation>();
 			services.AddScoped<IOperationScoped, Operation>();
