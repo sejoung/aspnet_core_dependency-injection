@@ -5,6 +5,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using WebApplication.DILifeTime;
 using WebApplication.MyDependency.IOC;
+using WebApplication.Service;
 
 namespace WebApplication
 {
@@ -26,6 +27,8 @@ namespace WebApplication
 			services.AddTransient<IOperationTransient, Operation>();
 			services.AddScoped<IOperationScoped, Operation>();
 			services.AddSingleton<IOperationSingleton, Operation>();
+			services.AddScoped<TestServiceScoped, TestServiceScoped>();
+			services.AddTransient<TestServiceTransient,TestServiceTransient>();
 			services.AddControllersWithViews();
 		}
 

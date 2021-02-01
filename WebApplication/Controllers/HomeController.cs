@@ -5,8 +5,10 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
+using WebApplication.DILifeTime;
 using WebApplication.Models;
 using WebApplication.MyDependency.IOC;
+using WebApplication.Service;
 
 namespace WebApplication.Controllers
 {
@@ -14,22 +16,38 @@ namespace WebApplication.Controllers
 	{
 		private readonly ILogger<HomeController> _logger;
 		private readonly IEnumerable<IMyDependency> _dependency;
+		private readonly IOperationTransient _transientOperation;
+		private readonly IOperationSingleton _singletonOperation;
+		private readonly IOperationScoped _scopedOperation;
+		private readonly TestServiceScoped _testServiceScoped;
+		private readonly TestServiceTransient _testServiceTransient;
 
-		public HomeController(ILogger<HomeController> logger,IEnumerable<IMyDependency> dependency)
+		public HomeController(ILogger<HomeController> logger, IEnumerable<IMyDependency> dependency, IOperationTransient transientOperation, IOperationSingleton singletonOperation, IOperationScoped scopedOperation, TestServiceScoped testServiceScoped, TestServiceTransient testServiceTransient)
 		{
 			_logger = logger;
 			_dependency = dependency;
+			_transientOperation = transientOperation;
+			_singletonOperation = singletonOperation;
+			_scopedOperation = scopedOperation;
+			_testServiceScoped = testServiceScoped;
+			_testServiceTransient = testServiceTransient;
 		}
 
 		public IActionResult Index()
 		{
-			_dependency.First(dependency => dependency.GetType() == typeof(MyDependency.IOC.MyDependency)).WriteMessage("잘나옴");
 			
+			_logger.LogInformation($"Transient: {_transientOperation.OperationId}");
+			_logger.LogInformation($"Scoped: {_scopedOperation.OperationId}");
+			_logger.LogInformation($"Singleton: {_singletonOperation.OperationId}");
+			_dependency.First(dependency => dependency.GetType() == typeof(MyDependency.IOC.MyDependency)).WriteMessage("잘나옴");
+			_testServiceScoped.Get();
+			_testServiceTransient.Get();
 			return View();
 		}
 
 		public IActionResult Privacy()
 		{
+			_testServiceTransient.Get();
 			return View();
 		}
 
